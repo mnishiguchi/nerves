@@ -37,13 +37,6 @@ configured for running Nerves.
 Let's create a new project.  The `nerves.new` project generator can be called
 from anywhere and can take either an absolute path or a relative path.
 
-> NOTE: If you've used Nerves in the past, you may have noticed that you no
-> longer need to specify a `--target` option when creating a new project.  Since
-> Nerves Bootstrap 0.3.0, the default target is `host` unless you specify a
-> different target in your environment.  This allows for more seamless
-> interaction with tools on your host without cross-compilers getting in the way
-> until you're ready to build firmware for a particular target.
-
 ``` bash
 mix nerves.new hello_nerves
 ```
@@ -53,9 +46,19 @@ application. If you chose not to fetch dependencies during project generation, y
 to do that yourself.
 
 As described by the project generator, the next step is to change to the project
-directory, choose a target, and fetch the target-specific dependencies.  Visit
-the [Targets Page](targets.html) for more information on what target name to use
-for each of the boards that Nerves supports.
+directory, choose a target, and fetch the target-specific dependencies.
+
+> #### What is my device's _MIX_TARGET_? {: .tip}
+> Visit the [Targets Page](targets.html) for information on what target name to
+> use for each of the boards that Nerves supports.
+
+> #### The default target is _host_ {: .info}
+> If you've used Nerves in the past, you may have noticed that you no
+> longer need to specify a `--target` option when creating a new project.  Since
+> Nerves Bootstrap 0.3.0, the default target is `host` unless you specify a
+> different target in your environment.  This allows for more seamless
+> interaction with tools on your host without cross-compilers getting in the way
+> until you're ready to build firmware for a particular target.
 
 The target is chosen using a shell environment variable, so if you use the
 `export` command, it will remain in effect as long as you leave that window
@@ -80,9 +83,6 @@ MIX_TARGET=rpi0 mix deps.get
 This allows you quick access to use host-based tooling in the former and
 deploy updated firmware from the latter, all without having to modify the
 `MIX_TARGET` variable in your shell.
-
-> REMINDER: To choose the correct target for your specific device refer to the
-> [Targets Page](targets.html)
 
 ## Building and deploying firmware
 
@@ -127,17 +127,18 @@ MIX_TARGET=rpi0 mix firmware.burn
 ```
 
 This command will attempt to automatically discover the SD card inserted in your
-host.  This may fail to correctly detect your SD card, for example, if you have
-more than one SD card inserted or you have disk images mounted.  If this
-happens, you can specify the intended device by passing the `-d <device>`
-argument to the command. For example:
+host.
 
-```bash
-mix firmware.burn -d /dev/rdisk3
-```
+> #### More than one SD cards or disk images? {: .tip}
+> `mix firmware.burn` may fail to correctly detect your SD card, for example,
+> if you have more than one SD card inserted or you have disk images mounted.
+> If this happens, you can specify the intended device by passing the `-d <device>`
+> argument to the command. For example `mix firmware.burn -d /dev/rdisk3`
 
-> NOTE: You can also use `-d <filename>` to specify an output file that is a raw image of the SD card.
-This binary image can be burned to an SD card using `fwup`, `dd`, `Win32DiskImager`, or some other image copying utility.
+
+> #### Outputing a raw image of the SD card {: .tip}
+> You can use `-d <filename>` to specify an output file that is a raw image of the SD card.
+> This binary image can be burned to an SD card using `fwup`, `dd`, `Win32DiskImager`, or some other image copying utility.
 
 For more options, refer to the `mix firmware.burn` documentation.
 
